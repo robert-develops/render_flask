@@ -1,0 +1,37 @@
+body {
+    background-color: #f8f9fa;
+}
+
+.card {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.results-container {
+    font-family: 'Courier New', monospace;
+    white-space: pre;
+    overflow-x: auto;
+    background-color: #f8f9fa;
+    padding: 1rem;
+    border-radius: 0.25rem;
+    border: 1px solid #dee2e6;
+}
+
+.table-border {
+    color: #495057;
+}
+
+.benchmark-input, .observation-input {
+    margin-bottom: 1rem;
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border-radius: 0.25rem;
+}
+
+.condition-equation-input {
+    margin-bottom: 1.5rem;
+}
+
+#compute-btn {
+    padding: 0.75rem 1.5rem;
+    font-size: 1.25rem;
+}
