@@ -202,6 +202,9 @@ function displayResults(data) {
     <p>Number of Condition Equations: ${data.num_condition_equations}</p>
     
     <h3 style="text-align: center;"><strong>Benchmark Data</strong></h3>
+    <p style="text-align: center; font-style: italic;">Benchmark data represents fixed reference points with established elevations.<br>
+    These points serve as the foundation for adjustment calculations.<br>
+    All new elevations are determined relative to these known benchmark values.</p>
     <table class="table table-bordered">
       <thead>
         <tr>
@@ -224,6 +227,8 @@ function displayResults(data) {
     </table>
     
     <h3 style="text-align: center;"><strong>Observation Data</strong></h3>
+    <p style="text-align: center; font-style: italic;">Observation data consists of field measurements collected between survey points in a network.
+    These measurements include height differences and distances that contain random errors requiring adjustment.</p>
     <table class="table table-bordered">
       <thead>
         <tr>
@@ -252,6 +257,9 @@ function displayResults(data) {
   if (data.modified_equations) {
     resultsHTML += `
       <h3 style="text-align: center;"><strong>Modified Equations</strong></h3>
+      <p style="text-align: center; font-style: italic;">Modified equations convert original condition formulas by adding correction terms (V variables) to height values.
+The function transforms expressions like "h1+h2=h3" into "V1+h1+V2+h2=V3+h3" through regex parsing.
+This systematic transformation prepares the equations for coefficient extraction. </p>
       <ul>
         ${data.modified_equations.map((eq) => `<li>${eq}</li>`).join("")}
       </ul>
@@ -262,6 +270,9 @@ function displayResults(data) {
   if (data.distance_matrix) {
     resultsHTML += `
       <h3 style="text-align: center;"><strong>Distance Matrix</strong></h3>
+      <p style="text-align: center; font-style: italic;">Distance matrix is a diagonal matrix containing surveyed distances (in Km) for each observation.
+It serves as a weight matrix in adjustment computations, with larger distances receiving less weight.<br>
+This matrix is used to scale coefficients in condition equations, reflecting measurement precision relative to observation length. </p>
       <div class="table-responsive">
         <table class="table table-bordered">
           <tbody>
@@ -286,6 +297,10 @@ function displayResults(data) {
 
     resultsHTML += `
       <h3 style="text-align: center;"><strong>Coefficient Table</strong></h3>
+      <p style="text-align: center; font-style: italic;">the coefficient table is a matrix that represents the relationship between each condition equation 
+      and the correction parameters (V1, V2, etc.) in the geodetic adjustment process. It consists of rows
+       for each condition equation and columns for each observation, with elements containing values (+1, -1, or 0) that
+        indicate how each observation contributes to satisfying the geometric constraints expressed by the condition equations.</p>
       <div class="table-responsive">
         <table class="table table-bordered">
           <thead>
@@ -319,6 +334,9 @@ function displayResults(data) {
 
     resultsHTML += `
       <h3 style="text-align: center;"><strong>Weighted Coefficient Table (Coefficient × Distance)</strong></h3>
+      <p style="text-align: center; font-style: italic;">The Weighted Coefficient Table is created by multiplying each coefficient in the coefficient table by the 
+      corresponding distance value from the distance matrix. This weighting reflects the influence of observation
+       distances on the adjustment process, as longer distances typically have greater uncertainty.</p>
       <div class="table-responsive">
         <table class="table table-bordered">
           <thead>
@@ -351,6 +369,10 @@ function displayResults(data) {
   if (data.transposed_table && data.transposed_table.length > 0) {
     resultsHTML += `
       <h3 style="text-align: center;"><strong>Transposed Matrix</strong></h3>
+      <p style="text-align: center; font-style: italic;">The Transposed Matrix is created by switching the rows and columns of the coefficient table, 
+      transforming equation-based rows into parameter-based rows. In this geodetic adjustment process, 
+      it converts the n×m coefficient matrix to an m×n matrix where m is the number of parameters and n 
+      is the number of equations. This transposition is a necessary step for subsequent matrix operations. </p>
       <div class="table-responsive">
         <table class="table table-bordered">
           <thead>
@@ -383,6 +405,8 @@ function displayResults(data) {
 
     resultsHTML += `
       <h3 style="text-align: center;"><strong>Product Table (Result Table × Transpose)</strong></h3>
+      <p style="text-align: center; font-style: italic;">The Product Table is the result of multiplying the Weighted Coefficient Table with its transpose,
+       creating a square matrix that represents the normal equations in the adjustment process. </p>
       <div class="table-responsive">
         <table class="table table-bordered">
           <thead>
@@ -416,6 +440,11 @@ function displayResults(data) {
 
     resultsHTML += `
       <h3 style="text-align: center;"><strong>Inverse of Product Table</strong></h3>
+      <p style="text-align: center; font-style: italic;">The Inverse of Product Table is the matrix inverse of the Product Table (normal equations matrix),
+       which is a crucial component for solving the condition equation adjustment system. This inverse matrix, 
+       when multiplied by the w values (condition equation constants), yields the Lagrange multipliers (K values) 
+       that are needed to determine corrections to observations. The inverse operation effectively solves the system 
+       of equations that balances all geometric constraints in the adjustment process. </p>
       <div class="table-responsive">
         <table class="table table-bordered">
           <thead>
@@ -447,6 +476,10 @@ function displayResults(data) {
   if (data.v_table_from_inverse && data.v_table_from_inverse.length > 0) {
     resultsHTML += `
       <h3 style="text-align: center;"><strong>K Values</strong></h3>
+      <p style="text-align: center; font-style: italic;">K values are the Lagrange multipliers calculated by multiplying the negative 
+      inverse of the Product Table with the w values (condition equation constants). 
+      These K values are essential coefficients in the condition equation adjustment 
+      method that help determine the optimal corrections to observations. </p>
       <table class="table table-bordered">
         <thead>
           <tr>
@@ -474,6 +507,11 @@ function displayResults(data) {
   if (data.residual && data.residual.length > 0) {
     resultsHTML += `
       <h3 style="text-align: center;"><strong>Residuals</strong></h3>
+      <p style="text-align: center; font-style: italic;">Residuals represent the corrections applied to observed height differences 
+      (h_obs) to obtain the most consistent set of measurements. They're calculated by 
+      multiplying the negative weight matrix (-P) with the transpose of the coefficient matrix 
+      and parameter estimates (K-values). These residuals help minimize errors in the height measurements 
+      based on the mathematical constraints defined in the condition equations. </p>
       <table class="table table-bordered">
         <thead>
           <tr>
@@ -500,6 +538,11 @@ function displayResults(data) {
   if (data.adjusted_heights) {
     resultsHTML += `
       <h3 style="text-align: center;"><strong>Adjusted Heights</strong></h3>
+      <p style="text-align: center; font-style: italic;">Adjusted heights are the final corrected height values obtained by adding 
+      the calculated residuals to the originally observed height differences (h_obs). 
+      They represent the most consistent set of height measurements after accounting 
+      for mathematical constraints and minimizing errors. The adjusted heights are 
+      computed in the calculate_adjusted_heights function as: adjusted_height = h_obs + residual_value. </p>
       <table class="table table-bordered">
         <thead>
           <tr>
