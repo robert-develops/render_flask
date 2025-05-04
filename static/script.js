@@ -196,12 +196,12 @@ function displayResults(data) {
 
   // Create a formatted HTML display of the results
   let resultsHTML = `
-    <h3>Basic Information</h3>
+    <h3 style="text-align: center;"><strong>Basic Information</strong></h3>
     <p>Number of Observations: ${data.num_observations}</p>
     <p>Number of Parameters: ${data.num_parameters}</p>
     <p>Number of Condition Equations: ${data.num_condition_equations}</p>
     
-    <h3>Benchmark Data</h3>
+    <h3 style="text-align: center;"><strong>Benchmark Data</strong></h3>
     <table class="table table-bordered">
       <thead>
         <tr>
@@ -223,7 +223,7 @@ function displayResults(data) {
       </tbody>
     </table>
     
-    <h3>Observation Data</h3>
+    <h3 style="text-align: center;"><strong>Observation Data</strong></h3>
     <table class="table table-bordered">
       <thead>
         <tr>
@@ -251,7 +251,7 @@ function displayResults(data) {
   // Add condition equation results if available
   if (data.modified_equations) {
     resultsHTML += `
-      <h3>Modified Equations</h3>
+      <h3 style="text-align: center;"><strong>Modified Equations</strong></h3>
       <ul>
         ${data.modified_equations.map((eq) => `<li>${eq}</li>`).join("")}
       </ul>
@@ -261,7 +261,7 @@ function displayResults(data) {
   // Add distance matrix if available
   if (data.distance_matrix) {
     resultsHTML += `
-      <h3>Distance Matrix</h3>
+      <h3 style="text-align: center;"><strong>Distance Matrix</strong></h3>
       <div class="table-responsive">
         <table class="table table-bordered">
           <tbody>
@@ -285,7 +285,7 @@ function displayResults(data) {
     const numObs = data.observation_data.length;
 
     resultsHTML += `
-      <h3>Coefficient Table</h3>
+      <h3 style="text-align: center;"><strong>Coefficient Table</strong></h3>
       <div class="table-responsive">
         <table class="table table-bordered">
           <thead>
@@ -318,7 +318,7 @@ function displayResults(data) {
     const numObs = data.observation_data.length;
 
     resultsHTML += `
-      <h3>Weighted Coefficient Table (Coefficient × Distance)</h3>
+      <h3 style="text-align: center;"><strong>Weighted Coefficient Table (Coefficient × Distance)</strong></h3>
       <div class="table-responsive">
         <table class="table table-bordered">
           <thead>
@@ -350,7 +350,7 @@ function displayResults(data) {
   // Add transposed matrix if available
   if (data.transposed_table && data.transposed_table.length > 0) {
     resultsHTML += `
-      <h3>Transposed Matrix</h3>
+      <h3 style="text-align: center;"><strong>Transposed Matrix</strong></h3>
       <div class="table-responsive">
         <table class="table table-bordered">
           <thead>
@@ -382,7 +382,7 @@ function displayResults(data) {
     const numEquations = data.product_table.length;
 
     resultsHTML += `
-      <h3>Product Table (Result Table × Transpose)</h3>
+      <h3 style="text-align: center;"><strong>Product Table (Result Table × Transpose)</strong></h3>
       <div class="table-responsive">
         <table class="table table-bordered">
           <thead>
@@ -415,7 +415,7 @@ function displayResults(data) {
     const numEquations = data.inverse_table.length;
 
     resultsHTML += `
-      <h3>Inverse of Product Table</h3>
+      <h3 style="text-align: center;"><strong>Inverse of Product Table</strong></h3>
       <div class="table-responsive">
         <table class="table table-bordered">
           <thead>
@@ -446,7 +446,7 @@ function displayResults(data) {
   // Add K values if available
   if (data.v_table_from_inverse && data.v_table_from_inverse.length > 0) {
     resultsHTML += `
-      <h3>K Values</h3>
+      <h3 style="text-align: center;"><strong>K Values</strong></h3>
       <table class="table table-bordered">
         <thead>
           <tr>
@@ -473,7 +473,7 @@ function displayResults(data) {
   // Add residuals if available
   if (data.residual && data.residual.length > 0) {
     resultsHTML += `
-      <h3>Residuals</h3>
+      <h3 style="text-align: center;"><strong>Residuals</strong></h3>
       <table class="table table-bordered">
         <thead>
           <tr>
@@ -499,7 +499,7 @@ function displayResults(data) {
   // Add adjusted heights if available
   if (data.adjusted_heights) {
     resultsHTML += `
-      <h3>Adjusted Heights</h3>
+      <h3 style="text-align: center;"><strong>Adjusted Heights</strong></h3>
       <table class="table table-bordered">
         <thead>
           <tr>
@@ -524,8 +524,7 @@ function displayResults(data) {
   }
 
   container.innerHTML = resultsHTML;
+
+  // Scroll to results
+  container.scrollIntoView({ behavior: "smooth" });
 }
-
-
-// Scroll to results
-  container.scrollIntoView({ behavior: 'smooth' });
